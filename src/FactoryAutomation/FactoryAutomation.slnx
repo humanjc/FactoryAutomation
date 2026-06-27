@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="FactoryAutomation.Api/FactoryAutomation.Api.csproj" />
+  <Project Path="FactoryAutomation.Blazor/FactoryAutomation.Blazor.csproj" />
+  <Project Path="FactoryAutomation.Shared/FactoryAutomation.Shared.csproj" />
+  <Project Path="FactoryAutomation.Worker/FactoryAutomation.Worker.csproj" />
+</Solution>

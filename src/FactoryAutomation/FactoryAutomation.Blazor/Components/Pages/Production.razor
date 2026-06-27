@@ -1,0 +1,35 @@
+﻿@page "/production"
+@rendermode InteractiveServer
+@using FactoryAutomation.Shared
+@inject HttpClient Http
+
+<h3>생산 현황</h3>
+
+@if (data is null)
+{
+    <p>데이터를 불러오는 중입니다.</p>
+}
+else
+{
+    <p>라인: @data.LineName</p>
+    <p>양품 수량: @data.GoodCount</p>
+    <p>불량 수량: @data.NgCount</p>
+    <p>상태: @data.Status</p>
+    <p>갱신 시각: @data.CreatedAt</p>
+}
+
+<button @onclick="LoadData">새로고침</button>
+
+@code {
+    private ProductionSnapshot? data;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        data = await Http.GetFromJsonAsync<ProductionSnapshot>("/api/production/latest");
+    }
+}
