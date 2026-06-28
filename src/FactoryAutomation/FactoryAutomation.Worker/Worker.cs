@@ -6,11 +6,14 @@ namespace FactoryAutomation.Worker;
 public class Worker : BackgroundService
 {
     private readonly ILogger<Worker> _logger;
-    private readonly string _dbPath = @"C:\FactoryDemoData\factory.db";
+    private readonly string _dbPath;
 
-    public Worker(ILogger<Worker> logger)
+    public Worker(ILogger<Worker> logger, IConfiguration configuration)
     {
         _logger = logger;
+
+        _dbPath = configuration["FactoryDatabase:Path"]
+            ?? throw new InvalidOperationException("FactoryDatabase:Path 설정이 없습니다.");
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)

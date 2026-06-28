@@ -8,11 +8,21 @@ builder.Services.AddCors(options =>
         policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 });
 
+if (OperatingSystem.IsWindows())
+{
+    builder.Configuration.AddJsonFile("appsettings.Windows.json", optional: true);
+}
+else if (OperatingSystem.IsLinux())
+{
+    builder.Configuration.AddJsonFile("appsettings.Linux.json", optional: true);
+}
+
 var app = builder.Build();
 
 app.UseCors();
 
-var dbPath = @"C:\FactoryDemoData\factory.db";
+var dbPath = builder.Configuration["FactoryDatabase:Path"]
+    ?? throw new InvalidOperationException("FactoryDatabase:Path 설정이 없습니다.");
 
 app.MapGet("/api/production/latest", async () =>
 {

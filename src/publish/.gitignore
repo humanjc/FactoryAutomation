@@ -1,3 +1,7 @@
 win_x64/*.Api
 win_x64/*.Blazor
 win_x64/*.Worker
+
+linux_x64/*.Api
+linux_x64/*.Blazor
+linux_x64/*.Worker
