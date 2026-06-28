@@ -1,6 +1,7 @@
 ﻿@page "/production"
 @rendermode InteractiveServer
 @using FactoryAutomation.Shared
+@implements IDisposable
 @inject HttpClient Http
 
 <h3>생산 현황</h3>
@@ -18,18 +19,48 @@ else
     <p>갱신 시각: @data.CreatedAt</p>
 }
 
-<button @onclick="LoadData">새로고침</button>
-
 @code {
     private ProductionSnapshot? data;
+    private PeriodicTimer? timer;
+    private CancellationTokenSource? cancellationTokenSource;
 
     protected override async Task OnInitializedAsync()
     {
+        cancellationTokenSource = new CancellationTokenSource();
+        timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
+
         await LoadData();
+
+        _ = StartAutoRefreshAsync(cancellationTokenSource.Token);
+    }
+
+    private async Task StartAutoRefreshAsync(CancellationToken cancellationToken)
+    {
+        try
+        {
+            while (timer is not null &&
+                   await timer.WaitForNextTickAsync(cancellationToken))
+            {
+                await LoadData();
+
+                await InvokeAsync(StateHasChanged);
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            // 페이지를 벗어날 때 정상적으로 발생합니다.
+        }
     }
 
     private async Task LoadData()
     {
         data = await Http.GetFromJsonAsync<ProductionSnapshot>("/api/production/latest");
+    }
+
+    public void Dispose()
+    {
+        cancellationTokenSource?.Cancel();
+        cancellationTokenSource?.Dispose();
+        timer?.Dispose();
     }
 }
