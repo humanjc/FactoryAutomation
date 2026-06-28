@@ -1,7 +1,7 @@
 param(
     [string]$PublishRoot = $PSScriptRoot,
-    [string]$ApiUrl = "http://localhost:5000",
-    [string]$BlazorUrl = "http://localhost:5001"
+    [string]$ApiUrl = "http://0.0.0.0:5000",
+    [string]$BlazorUrl = "http://0.0.0.0:5001"
 )
 
 $ErrorActionPreference = "Stop"
