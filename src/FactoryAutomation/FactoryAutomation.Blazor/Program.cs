@@ -8,7 +8,7 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddHttpClient("FactoryApi", client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7057");
+    client.BaseAddress = new Uri("http://localhost:5000");
 });
 
 builder.Services.AddScoped(sp =>
@@ -24,7 +24,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAntiforgery();
 

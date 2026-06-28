@@ -1,0 +1,3 @@
+win_x64/*.Api
+win_x64/*.Blazor
+win_x64/*.Worker
