@@ -1,6 +1,6 @@
 param(
     [string]$SolutionRoot = (Join-Path $PSScriptRoot "\..\..\FactoryAutomation"),
-    [string]$PublishRoot = "D:\Learn\FAdotNet\src\publish\win_x64",
+    [string]$PublishRoot = $PSScriptRoot,
     [string]$Configuration = "Release",
     [string]$Runtime = "win-x64",
     [switch]$SelfContained
